@@ -4,6 +4,8 @@
 #Version 2.0 time:2014-12-23
 
 logfile=/tmp/$0.log
+free_mem=100
+free_cpu=10
 
 check_os_release()
 {
@@ -89,7 +91,7 @@ rhel_fun()
     vm_mem=$(free -m|grep "buffers/cache"|awk '{print $4}')
     cpu=$(top -bn2|grep "Cpu(s)"|awk '{print $8}'|awk -F'%' '{print $1}'|tail -n1)
     check_cpu=$(echo "$cpu <20" |bc)
-    if [[ $vm_mem -le 100 ]] || [[ $check_cpu -eq 1  ]]
+    if [[ $vm_mem -le $free_mem ]] || [[ $check_cpu -le $free_cpu  ]]
     then
       echo "======================================================" >>$logfile
       date >>$logfile
@@ -116,7 +118,7 @@ debian_fun()
     vm_mem=$(free -m|grep "buffers/cache"|awk '{print $4}')
     cpu=$(top -bn2|grep "Cpu(s)"|awk '{print $8}'|awk -F'%' '{print $1}'|tail -n1)
     check_cpu=$(echo "$cpu <20" |bc)
-    if [[ $vm_mem -le 100 ]] || [[ $check_cpu -eq 1  ]]
+    if [[ $vm_mem -le $free_mem ]] || [[ $check_cpu -le $free_cpu  ]]
     then
       echo "======================================================" >>$logfile
       date >>$logfile
